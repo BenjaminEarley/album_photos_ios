@@ -12,14 +12,14 @@ struct AlbumListContainer: View {
     @EnvironmentObject var store: AppStore
 
     var body: some View {
-        let albums = Array(store.state.albums.prefix(10))
+        let albums = Array(store.state.album.albums.prefix(10))
         return AlbumList(
             albums: albums
         ).onAppear(perform: fetch)
     }
 
     private func fetch() {
-        store.send(.getAlbums)
+        store.send(.album(action: .getAlbums))
     }
 }
 

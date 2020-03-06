@@ -13,7 +13,7 @@ struct AlbumDetailContainer: View {
     @EnvironmentObject var store: AppStore
 
     var body: some View {
-        let photos = Array(store.state.photos[album.id]?.prefix(10) ?? ArraySlice<Photo>())
+        let photos = Array(store.state.photo.photos[album.id]?.prefix(10) ?? ArraySlice<Photo>())
         return AlbumDetail(
             title: album.title,
             photos: photos
@@ -21,7 +21,7 @@ struct AlbumDetailContainer: View {
     }
 
     private func fetch() {
-        store.send(.getPhotos(album: album))
+        store.send(.photo(action: .getPhotos(album: album)))
     }
 }
 

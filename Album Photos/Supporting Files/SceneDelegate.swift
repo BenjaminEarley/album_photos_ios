@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Create the SwiftUI view that provides the window contents.
-        let store = AppStore(initialState: .init(), reducer: appReducer, environment: AppWorld())
+        let store = Store<AppState, AppAction, World>(initialState: .init(), reducer: appReducer, environment: AppWorld())
         let contentView = Home().environmentObject(store)
 
         // Use a UIHostingController as window root view controller.
