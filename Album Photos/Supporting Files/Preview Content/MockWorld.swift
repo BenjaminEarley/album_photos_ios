@@ -17,6 +17,7 @@ class MockAlbumService: AlbumService {
     func getAlbums() -> AnyPublisher<[Album], Error> {
         Just(albumData).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
+
     func getPhotos(album: Album) -> AnyPublisher<[Photo], Error> {
         Just(photoData).setFailureType(to: Error.self).eraseToAnyPublisher()
     }

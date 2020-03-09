@@ -13,10 +13,28 @@ struct AlbumDetailContainer: View {
     @EnvironmentObject var store: AppStore
 
     var body: some View {
-        let photos = Array(store.state.photo.photos[album.id]?.prefix(10) ?? ArraySlice<Photo>())
+        let photos = Array(store.state.photo.cache[album.id]?.prefix(10) ?? ArraySlice<Photo>())
+        var isLoading = false
+        var message: String = ""
+        switch store.state.photo.network {
+        case .Loading:
+            if (photos.isEmpty) {
+                isLoading = true
+            }
+        case .Error(let reason):
+            if (photos.isEmpty) {
+                message = reason
+            }
+        case .Success(_):
+            if (photos.isEmpty) {
+                message = "No Photos"
+            }
+        }
         return AlbumDetail(
-            title: album.title,
-            photos: photos
+                title: album.title,
+                isLoading: isLoading,
+                message: message,
+                photos: photos
         ).onAppear(perform: fetch)
     }
 
@@ -25,18 +43,22 @@ struct AlbumDetailContainer: View {
     }
 }
 
-struct AlbumDetail : View {
+struct AlbumDetail: View {
     let title: String
+    let isLoading: Bool
+    let message: String
     let photos: [Photo]
 
     var body: some View {
         List {
-            if photos.isEmpty {
-                Text("Loading...")
-            } else {
+            if !photos.isEmpty {
                 ForEach(photos) { photo in
                     PhotoRow(photo: photo)
                 }
+            } else if isLoading {
+                Loading()
+            } else if message != "" {
+                Message(message: message)
             }
         }.navigationBarTitle(Text(title), displayMode: .inline)
     }
@@ -44,6 +66,6 @@ struct AlbumDetail : View {
 
 struct AlbumDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumDetail(title: albumData[0].title, photos: photoData)
+        AlbumDetail(title: albumData[0].title, isLoading: false, message: "", photos: photoData)
     }
 }

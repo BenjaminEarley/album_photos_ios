@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct PhotoRow: View {
-    
+
     var photo: Photo
-    
+
     var body: some View {
         Text(photo.title)
     }

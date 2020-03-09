@@ -12,9 +12,27 @@ struct AlbumListContainer: View {
     @EnvironmentObject var store: AppStore
 
     var body: some View {
-        let albums = Array(store.state.album.albums.prefix(10))
+        let albums = Array(store.state.album.cache.prefix(10))
+        var isLoading = false
+        var message: String = ""
+        switch store.state.album.network {
+        case .Loading:
+            if (albums.isEmpty) {
+                isLoading = true
+            }
+        case .Error(let reason):
+            if (albums.isEmpty) {
+                message = reason
+            }
+        case .Success(_):
+            if (albums.isEmpty) {
+                message = "No Photos"
+            }
+        }
         return AlbumList(
-            albums: albums
+                isLoading: isLoading,
+                message: message,
+                albums: albums
         ).onAppear(perform: fetch)
     }
 
@@ -23,14 +41,18 @@ struct AlbumListContainer: View {
     }
 }
 
-struct AlbumList : View {
+struct AlbumList: View {
+    let isLoading: Bool
+    let message: String
     let albums: [Album]
 
     var body: some View {
         List {
-            if albums.isEmpty {
-                Text("Loading...")
-            } else {
+            if isLoading {
+                Loading()
+            } else if message != "" {
+                Message(message: message)
+            } else if !albums.isEmpty {
                 ForEach(albums) { album in
                     NavigationLink(destination: AlbumDetailContainer(album: album)) {
                         AlbumRow(album: album)
@@ -43,7 +65,15 @@ struct AlbumList : View {
 
 struct AlbumListView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumList(albums: albumData)
+        Group {
+            AlbumList(isLoading: false, message: "", albums: albumData)
+                    .previewDisplayName("Loaded Album Data")
+            AlbumList(isLoading: true, message: "", albums: [])
+                    .previewDisplayName("Loading")
+            AlbumList(isLoading: false, message: "Error", albums: [])
+                    .previewDisplayName("Error")
+        }
+
     }
 }
 

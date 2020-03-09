@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct AlbumRow: View {
-    
+
     var album: Album
-    
+
     var body: some View {
         Text(album.title)
     }

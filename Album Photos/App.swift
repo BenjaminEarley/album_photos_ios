@@ -20,79 +20,99 @@ struct AppWorld: World {
 typealias AppStore = Store<AppState, AppAction, World>
 
 struct AppState {
-    var album: AlbumState = AlbumState(albums: [])
-    var photo: PhotoState = PhotoState(photos: [:])
+    var album: AlbumState = AlbumState(network: .Loading)
+    var photo: PhotoState = PhotoState(network: .Loading)
 }
 
 struct AlbumState {
-    var albums: [Album] = []
+    var network: Result<[Album]> = .Loading
+    var cache: [Album] = []
 }
 
 struct PhotoState {
-    var photos: [Int: [Photo]] = [:]
+    var network: Result<[Photo]> = .Loading
+    var cache: [Int: [Photo]] = [:]
 }
 
 enum AppAction {
-   case album(action: AlbumAction)
-   case photo(action: PhotoAction)
+    case album(action: AlbumAction)
+    case photo(action: PhotoAction)
 }
 
 enum AlbumAction {
     case setAlbumResults(albums: [Album])
+    case setErrorResult(message: String)
     case getAlbums
 }
 
 enum PhotoAction {
     case setPhotoResults(album: Album, photos: [Photo])
+    case setErrorResult(message: String)
     case getPhotos(album: Album)
 }
 
 func appReducer(
-    state: inout AppState,
-    action: AppAction,
-    environment: World
+        state: inout AppState,
+        action: AppAction,
+        environment: World
 ) -> AnyPublisher<AppAction, Never> {
     switch action {
     case let .album(albumAction):
-        return AlbumReducer(&state.album, albumAction, environment).map { AppAction.album(action: $0) }.eraseToAnyPublisher()
+        return AlbumReducer(&state.album, albumAction, environment).map {
+            AppAction.album(action: $0)
+        }.eraseToAnyPublisher()
     case let .photo(photoAction):
-        return PhotoReducer(&state.photo, photoAction, environment).map { AppAction.photo(action: $0) }.eraseToAnyPublisher()
+        return PhotoReducer(&state.photo, photoAction, environment).map {
+            AppAction.photo(action: $0)
+        }.eraseToAnyPublisher()
     }
- 
+
 }
 
 func AlbumReducer(
-    _ state: inout AlbumState,
-    _ action: AlbumAction,
-    _ environment: World
-    ) -> AnyPublisher<AlbumAction, Never> {
+        _ state: inout AlbumState,
+        _ action: AlbumAction,
+        _ environment: World
+) -> AnyPublisher<AlbumAction, Never> {
     switch action {
-        case let .setAlbumResults(albums: albums):
-            state.albums = albums
-        case .getAlbums:
-            return environment.service
+    case .getAlbums:
+        state.network = Result.Loading
+        return environment.service
                 .getAlbums()
-                .replaceError(with: [])
-                .map { AlbumAction.setAlbumResults(albums: $0) }
+                .map {
+                    AlbumAction.setAlbumResults(albums: $0)
+                }
+                .replaceError(with: AlbumAction.setErrorResult(message: "Error Loading Photos"))
                 .eraseToAnyPublisher()
+    case let .setAlbumResults(album):
+        state.network = .Success(value: album)
+        state.cache = album
+    case let .setErrorResult(message):
+        state.network = .Error(reason: message)
     }
     return Empty().eraseToAnyPublisher()
 }
 
 func PhotoReducer(
-    _ state: inout PhotoState,
-    _ action: PhotoAction,
-    _ environment: World
-    ) -> AnyPublisher<PhotoAction, Never> {
+        _ state: inout PhotoState,
+        _ action: PhotoAction,
+        _ environment: World
+) -> AnyPublisher<PhotoAction, Never> {
     switch action {
-    case let .setPhotoResults(album, photos):
-        state.photos.updateValue(photos, forKey: album.id)
     case let .getPhotos(album: album):
+        state.network = Result.Loading
         return environment.service
-            .getPhotos(album: album)
-            .replaceError(with: [])
-            .map { .setPhotoResults(album: album, photos: $0) }
-            .eraseToAnyPublisher()
+                .getPhotos(album: album)
+                .map {
+                    PhotoAction.setPhotoResults(album: album, photos: $0)
+                }
+                .replaceError(with: PhotoAction.setErrorResult(message: "Error Loading Photos"))
+                .eraseToAnyPublisher()
+    case let .setPhotoResults(album, photos):
+        state.network = .Success(value: photos)
+        state.cache.updateValue(photos, forKey: album.id)
+    case let .setErrorResult(message):
+        state.network = .Error(reason: message)
     }
     return Empty().eraseToAnyPublisher()
 }

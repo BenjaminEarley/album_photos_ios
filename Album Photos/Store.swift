@@ -9,8 +9,9 @@
 import Foundation
 import Combine
 
+
 typealias Reducer<State, Action, Environment> =
-    (inout State, Action, Environment) -> AnyPublisher<Action, Never>?
+        (inout State, Action, Environment) -> AnyPublisher<Action, Never>?
 
 final class Store<State, Action, Environment>: ObservableObject {
     @Published private(set) var state: State
@@ -21,9 +22,9 @@ final class Store<State, Action, Environment>: ObservableObject {
     private var projectionCancellable: AnyCancellable?
 
     init(
-        initialState: State,
-        reducer: @escaping Reducer<State, Action, Environment>,
-        environment: Environment
+            initialState: State,
+            reducer: @escaping Reducer<State, Action, Environment>,
+            environment: Environment
     ) {
         self.state = initialState
         self.reducer = reducer
@@ -39,12 +40,14 @@ final class Store<State, Action, Environment>: ObservableObject {
         var cancellable: AnyCancellable?
 
         cancellable = effect
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { [weak self] _ in
-                    didComplete = true
-                    if let c = cancellable { self?.effectCancellables.remove(c) }
-                }, receiveValue: send)
+                .receive(on: DispatchQueue.main)
+                .sink(
+                        receiveCompletion: { [weak self] _ in
+                            didComplete = true
+                            if let c = cancellable {
+                                self?.effectCancellables.remove(c)
+                            }
+                        }, receiveValue: send)
         if !didComplete, let cancellable = cancellable {
             effectCancellables.insert(cancellable)
         }
