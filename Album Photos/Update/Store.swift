@@ -9,14 +9,14 @@
 import SwiftUI
 import Combine
 
-typealias AppStore = Store<AppState, Message, World>
+typealias AppStore = Store<AppState, AppMessage, World>
 
 final class Store<State, Message, Environment>: ObservableObject {
     @Published private(set) var state: State
     private let reducer: Reducer<State, Message, Environment>
     private let environment: Environment
 
-    private var effectCancellables: Set<AnyCancellable> = []
+    private var effectCancellables: Dictionary<UUID, AnyCancellable> = [:]
 
     init(
             initialState: State,
@@ -28,29 +28,35 @@ final class Store<State, Message, Environment>: ObservableObject {
         self.environment = environment
     }
 
-    func send(_ message: Message) {
+    @discardableResult
+    func send(_ message: Message) -> UUID {
+        let uuid = UUID()
+        send(message, uuid: uuid)
+        return uuid
+    }
+
+    private func send(_ message: Message, uuid: UUID) {
         let effect = reducer(&state, message, environment)
 
         var didComplete = false
-        var cancellable: AnyCancellable?
+        var cancellable: AnyCancellable
 
         cancellable = effect
                 .receive(on: DispatchQueue.main)
                 .sink(
                         receiveCompletion: { [weak self] _ in
                             didComplete = true
-                            if let c = cancellable {
-                                self?.effectCancellables.remove(c)
-                            }
-                        }, receiveValue: send)
-        if !didComplete, let cancellable = cancellable {
-            effectCancellables.insert(cancellable)
+                            self?.effectCancellables.removeValue(forKey: uuid)
+                            
+                    }, receiveValue: { [weak self] message in
+                        self?.send(message, uuid: uuid)
+                    })
+        if !didComplete {
+            effectCancellables.updateValue(cancellable, forKey: uuid)
         }
     }
 
-    func clearEffects() {
-        for effect in effectCancellables {
-            effect.cancel()
-        }
+    func clearSideEffect(byUuid: UUID) {
+        effectCancellables[byUuid]?.cancel()
     }
 }

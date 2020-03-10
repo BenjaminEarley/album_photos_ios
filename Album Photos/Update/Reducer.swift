@@ -13,17 +13,17 @@ typealias Reducer<State, Message, Environment> =
 
 func appReducer(
         state: inout AppState,
-        message: Message,
+        message: AppMessage,
         environment: World
-) -> AnyPublisher<Message, Never> {
+) -> AnyPublisher<AppMessage, Never> {
     switch message {
     case let .album(albumMessage):
         return AlbumReducer(&state.album, albumMessage, environment).map {
-            Message.album(message: $0)
+            AppMessage.album(message: $0)
         }.eraseToAnyPublisher()
     case let .photo(photoMessage):
         return PhotoReducer(&state.photo, photoMessage, environment).map {
-            Message.photo(message: $0)
+            AppMessage.photo(message: $0)
         }.eraseToAnyPublisher()
     }
 
@@ -75,4 +75,11 @@ func PhotoReducer(
         state.network = .Error(reason: message)
     }
     return Empty().eraseToAnyPublisher()
+}
+
+enum Result<T> {
+    case Error(reason: String)
+    case Success(value: T)
+    case Loading
+    case Uninitialized
 }

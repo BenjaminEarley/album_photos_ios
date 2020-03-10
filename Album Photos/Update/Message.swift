@@ -6,7 +6,9 @@
 //  Copyright © 2020 Benjamin Earley. All rights reserved.
 //
 
-enum Message {
+import Foundation
+
+enum AppMessage {
     case album(message: AlbumMessage)
     case photo(message: PhotoMessage)
 }
