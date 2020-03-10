@@ -35,11 +35,20 @@ struct AlbumDetailContainer: View {
                 isLoading: isLoading,
                 message: message,
                 photos: photos
-        ).onAppear(perform: fetch)
+        )
+        .onAppear(perform: fetch)
+            .onDisappear {
+                if case .Loading = self.store.state.photo.network {
+                  self.cancelFetch()
+                }
+        }
     }
 
     private func fetch() {
         store.send(.photo(message: .getPhotos(album: album)))
+    }
+    private func cancelFetch() {
+        store.clearEffects(byMessage: .photo(message: .getPhotos(album: album)))
     }
 }
 

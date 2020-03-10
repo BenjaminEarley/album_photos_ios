@@ -9,14 +9,14 @@
 import SwiftUI
 import Combine
 
-typealias AppStore = Store<AppState, Message, World>
+typealias AppStore = Store<AppState, AppMessage, World>
 
-final class Store<State, Message, Environment>: ObservableObject {
+final class Store<State, Message: Hashable, Environment>: ObservableObject {
     @Published private(set) var state: State
     private let reducer: Reducer<State, Message, Environment>
     private let environment: Environment
 
-    private var effectCancellables: Set<AnyCancellable> = []
+    private var effectCancellables: Dictionary<Message, Set<AnyCancellable>> = [:]
 
     init(
             initialState: State,
@@ -40,17 +40,15 @@ final class Store<State, Message, Environment>: ObservableObject {
                         receiveCompletion: { [weak self] _ in
                             didComplete = true
                             if let c = cancellable {
-                                self?.effectCancellables.remove(c)
+                                self?.effectCancellables[message]?.remove(c)
                             }
                         }, receiveValue: send)
         if !didComplete, let cancellable = cancellable {
-            effectCancellables.insert(cancellable)
+            effectCancellables[message, default: []].insert(cancellable)
         }
     }
 
-    func clearEffects() {
-        for effect in effectCancellables {
-            effect.cancel()
-        }
+    func clearEffects(byMessage: Message) {
+        effectCancellables[byMessage]?.forEach { $0.cancel() }
     }
 }
