@@ -52,7 +52,7 @@ struct AlbumDetailContainer: View {
         guard let id = uuid else {
             return
         }
-        store.clearEffects(byUuid: id)
+        store.clearSideEffect(byUuid: id)
     }
 }
 

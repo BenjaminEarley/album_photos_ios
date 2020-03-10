@@ -16,7 +16,7 @@ final class Store<State, Message, Environment>: ObservableObject {
     private let reducer: Reducer<State, Message, Environment>
     private let environment: Environment
 
-    private var effectCancellables: Dictionary<UUID, Set<AnyCancellable>> = [:]
+    private var effectCancellables: Dictionary<UUID, AnyCancellable> = [:]
 
     init(
             initialState: State,
@@ -27,7 +27,8 @@ final class Store<State, Message, Environment>: ObservableObject {
         self.reducer = reducer
         self.environment = environment
     }
-    
+
+    @discardableResult
     func send(_ message: Message) -> UUID {
         let uuid = UUID()
         send(message, uuid: uuid)
@@ -38,25 +39,24 @@ final class Store<State, Message, Environment>: ObservableObject {
         let effect = reducer(&state, message, environment)
 
         var didComplete = false
-        var cancellable: AnyCancellable?
+        var cancellable: AnyCancellable
 
         cancellable = effect
                 .receive(on: DispatchQueue.main)
                 .sink(
                         receiveCompletion: { [weak self] _ in
                             didComplete = true
-                            if let c = cancellable {
-                                self?.effectCancellables[uuid]?.remove(c)
-                            }
+                            self?.effectCancellables.removeValue(forKey: uuid)
+                            
                     }, receiveValue: { [weak self] message in
                         self?.send(message, uuid: uuid)
                     })
-        if !didComplete, let cancellable = cancellable {
-            effectCancellables[uuid, default: []].insert(cancellable)
+        if !didComplete {
+            effectCancellables.updateValue(cancellable, forKey: uuid)
         }
     }
 
-    func clearEffects(byUuid: UUID) {
-        effectCancellables[byUuid]?.forEach { $0.cancel() }
+    func clearSideEffect(byUuid: UUID) {
+        effectCancellables[byUuid]?.cancel()
     }
 }
