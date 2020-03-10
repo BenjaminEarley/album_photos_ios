@@ -9,13 +9,6 @@
 import SwiftUI
 import Combine
 
-enum Result<T> {
-    case Error(reason: String)
-    case Success(value: T)
-    case Loading
-    case Uninitialized
-}
-
 protocol AlbumService {
     func getAlbums() -> AnyPublisher<[Album], Error>
     func getPhotos(album: Album) -> AnyPublisher<[Photo], Error>

@@ -11,6 +11,7 @@ import SwiftUI
 struct AlbumDetailContainer: View {
     let album: Album
     @EnvironmentObject var store: AppStore
+    @State var uuid: UUID? = nil
 
     var body: some View {
         let photos = Array(store.state.photo.cache[album.id]?.prefix(10) ?? ArraySlice<Photo>())
@@ -36,19 +37,22 @@ struct AlbumDetailContainer: View {
                 message: message,
                 photos: photos
         )
-        .onAppear(perform: fetch)
+            .onAppear {
+                self.uuid = self.fetch()
+            }
             .onDisappear {
-                if case .Loading = self.store.state.photo.network {
-                  self.cancelFetch()
-                }
+                self.cancelFetch(byUuid: self.uuid)
         }
     }
 
-    private func fetch() {
-        store.send(.photo(message: .getPhotos(album: album)))
+    private func fetch() -> UUID {
+        return store.send(.photo(message: .getPhotos(album: album)))
     }
-    private func cancelFetch() {
-        store.clearEffects(byMessage: .photo(message: .getPhotos(album: album)))
+    private func cancelFetch(byUuid uuid: UUID?) {
+        guard let id = uuid else {
+            return
+        }
+        store.clearEffects(byUuid: id)
     }
 }
 

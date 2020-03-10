@@ -11,12 +11,12 @@ import Combine
 
 typealias AppStore = Store<AppState, AppMessage, World>
 
-final class Store<State, Message: Hashable, Environment>: ObservableObject {
+final class Store<State, Message, Environment>: ObservableObject {
     @Published private(set) var state: State
     private let reducer: Reducer<State, Message, Environment>
     private let environment: Environment
 
-    private var effectCancellables: Dictionary<Message, Set<AnyCancellable>> = [:]
+    private var effectCancellables: Dictionary<UUID, Set<AnyCancellable>> = [:]
 
     init(
             initialState: State,
@@ -27,8 +27,14 @@ final class Store<State, Message: Hashable, Environment>: ObservableObject {
         self.reducer = reducer
         self.environment = environment
     }
+    
+    func send(_ message: Message) -> UUID {
+        let uuid = UUID()
+        send(message, uuid: uuid)
+        return uuid
+    }
 
-    func send(_ message: Message) {
+    private func send(_ message: Message, uuid: UUID) {
         let effect = reducer(&state, message, environment)
 
         var didComplete = false
@@ -40,15 +46,17 @@ final class Store<State, Message: Hashable, Environment>: ObservableObject {
                         receiveCompletion: { [weak self] _ in
                             didComplete = true
                             if let c = cancellable {
-                                self?.effectCancellables[message]?.remove(c)
+                                self?.effectCancellables[uuid]?.remove(c)
                             }
-                        }, receiveValue: send)
+                    }, receiveValue: { [weak self] message in
+                        self?.send(message, uuid: uuid)
+                    })
         if !didComplete, let cancellable = cancellable {
-            effectCancellables[message, default: []].insert(cancellable)
+            effectCancellables[uuid, default: []].insert(cancellable)
         }
     }
 
-    func clearEffects(byMessage: Message) {
-        effectCancellables[byMessage]?.forEach { $0.cancel() }
+    func clearEffects(byUuid: UUID) {
+        effectCancellables[byUuid]?.forEach { $0.cancel() }
     }
 }
