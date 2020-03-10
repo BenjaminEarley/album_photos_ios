@@ -13,6 +13,7 @@ enum Result<T> {
     case Error(reason: String)
     case Success(value: T)
     case Loading
+    case Uninitialized
 }
 
 protocol AlbumService {

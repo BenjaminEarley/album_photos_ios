@@ -6,24 +6,21 @@
 //  Copyright © 2020 Benjamin Earley. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 import Combine
 
+typealias AppStore = Store<AppState, Message, World>
 
-typealias Reducer<State, Action, Environment> =
-        (inout State, Action, Environment) -> AnyPublisher<Action, Never>?
-
-final class Store<State, Action, Environment>: ObservableObject {
+final class Store<State, Message, Environment>: ObservableObject {
     @Published private(set) var state: State
-    private let reducer: Reducer<State, Action, Environment>
+    private let reducer: Reducer<State, Message, Environment>
     private let environment: Environment
 
     private var effectCancellables: Set<AnyCancellable> = []
-    private var projectionCancellable: AnyCancellable?
 
     init(
             initialState: State,
-            reducer: @escaping Reducer<State, Action, Environment>,
+            reducer: @escaping Reducer<State, Message, Environment>,
             environment: Environment
     ) {
         self.state = initialState
@@ -31,10 +28,8 @@ final class Store<State, Action, Environment>: ObservableObject {
         self.environment = environment
     }
 
-    func send(_ action: Action) {
-        guard let effect = reducer(&state, action, environment) else {
-            return
-        }
+    func send(_ message: Message) {
+        let effect = reducer(&state, message, environment)
 
         var didComplete = false
         var cancellable: AnyCancellable?
@@ -50,6 +45,12 @@ final class Store<State, Action, Environment>: ObservableObject {
                         }, receiveValue: send)
         if !didComplete, let cancellable = cancellable {
             effectCancellables.insert(cancellable)
+        }
+    }
+
+    func clearEffects() {
+        for effect in effectCancellables {
+            effect.cancel()
         }
     }
 }

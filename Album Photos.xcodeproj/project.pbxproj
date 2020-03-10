@@ -12,14 +12,16 @@
 		B535C9E124119A4B00A5031A /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535C9E024119A4B00A5031A /* MockData.swift */; };
 		B535C9E524119A7000A5031A /* albumData.json in Resources */ = {isa = PBXBuildFile; fileRef = B535C9E324119A7000A5031A /* albumData.json */; };
 		B535C9E624119A7000A5031A /* photoData.json in Resources */ = {isa = PBXBuildFile; fileRef = B535C9E424119A7000A5031A /* photoData.json */; };
-		B535C9E82411A5A300A5031A /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535C9E72411A5A300A5031A /* App.swift */; };
+		B535C9E82411A5A300A5031A /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535C9E72411A5A300A5031A /* Message.swift */; };
 		B563AC0A241164A6007C6617 /* PhotoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563AC09241164A6007C6617 /* PhotoRow.swift */; };
 		B563AC2024117F58007C6617 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563AC1F24117F58007C6617 /* Store.swift */; };
 		B56F7A7C2416AAAA0003FC46 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F7A7B2416AAAA0003FC46 /* Loading.swift */; };
-		B56F7A7E2416AAD00003FC46 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F7A7D2416AAD00003FC46 /* Message.swift */; };
+		B58914812417E360003A6898 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58914802417E360003A6898 /* Reducer.swift */; };
 		B59ADEBC2412A80F00531A52 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59ADEBB2412A80F00531A52 /* Album.swift */; };
 		B59ADEBE2412A81A00531A52 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59ADEBD2412A81A00531A52 /* Photo.swift */; };
 		B59ADEC12412A88000531A52 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59ADEC02412A88000531A52 /* Service.swift */; };
+		B5D73AE32417EB77007FEE52 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D73AE22417EB77007FEE52 /* World.swift */; };
+		B5D73AE52417EBCA007FEE52 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D73AE42417EBCA007FEE52 /* State.swift */; };
 		B5F2D94B241154FA006068D8 /* AlbumDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F2D94A241154FA006068D8 /* AlbumDetail.swift */; };
 		B5F70828241146E00090E9F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F70827241146E00090E9F0 /* AppDelegate.swift */; };
 		B5F7082A241146E00090E9F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F70829241146E00090E9F0 /* SceneDelegate.swift */; };
@@ -36,14 +38,16 @@
 		B535C9E024119A4B00A5031A /* MockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		B535C9E324119A7000A5031A /* albumData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = albumData.json; sourceTree = "<group>"; };
 		B535C9E424119A7000A5031A /* photoData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = photoData.json; sourceTree = "<group>"; };
-		B535C9E72411A5A300A5031A /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		B535C9E72411A5A300A5031A /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B563AC09241164A6007C6617 /* PhotoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRow.swift; sourceTree = "<group>"; };
 		B563AC1F24117F58007C6617 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		B56F7A7B2416AAAA0003FC46 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
-		B56F7A7D2416AAD00003FC46 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B58914802417E360003A6898 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		B59ADEBB2412A80F00531A52 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		B59ADEBD2412A81A00531A52 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		B59ADEC02412A88000531A52 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		B5D73AE22417EB77007FEE52 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
+		B5D73AE42417EBCA007FEE52 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		B5F2D94A241154FA006068D8 /* AlbumDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetail.swift; sourceTree = "<group>"; };
 		B5F70824241146E00090E9F0 /* Album Photos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Album Photos.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5F70827241146E00090E9F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,9 +116,19 @@
 			isa = PBXGroup;
 			children = (
 				B56F7A7B2416AAAA0003FC46 /* Loading.swift */,
-				B56F7A7D2416AAD00003FC46 /* Message.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		B58914822417E3FD003A6898 /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				B535C9E72411A5A300A5031A /* Message.swift */,
+				B5D73AE42417EBCA007FEE52 /* State.swift */,
+				B563AC1F24117F58007C6617 /* Store.swift */,
+				B58914802417E360003A6898 /* Reducer.swift */,
+			);
+			path = Update;
 			sourceTree = "<group>";
 		};
 		B59ADEBA2412A7F300531A52 /* Domain */ = {
@@ -124,6 +138,15 @@
 				B59ADEBD2412A81A00531A52 /* Photo.swift */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		B5D73AE62417ED76007FEE52 /* World */ = {
+			isa = PBXGroup;
+			children = (
+				B5D73AE22417EB77007FEE52 /* World.swift */,
+				B59ADEC02412A88000531A52 /* Service.swift */,
+			);
+			path = World;
 			sourceTree = "<group>";
 		};
 		B5F2D94C24115532006068D8 /* View */ = {
@@ -156,11 +179,10 @@
 		B5F70826241146E00090E9F0 /* Album Photos */ = {
 			isa = PBXGroup;
 			children = (
-				B535C9E72411A5A300A5031A /* App.swift */,
-				B563AC1F24117F58007C6617 /* Store.swift */,
-				B59ADEC02412A88000531A52 /* Service.swift */,
-				B59ADEBA2412A7F300531A52 /* Domain */,
+				B5D73AE62417ED76007FEE52 /* World */,
 				B5F2D94C24115532006068D8 /* View */,
+				B58914822417E3FD003A6898 /* Update */,
+				B59ADEBA2412A7F300531A52 /* Domain */,
 				B563AC1024117AC4007C6617 /* Supporting Files */,
 			);
 			path = "Album Photos";
@@ -249,6 +271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5D73AE32417EB77007FEE52 /* World.swift in Sources */,
 				B59ADEBE2412A81A00531A52 /* Photo.swift in Sources */,
 				B59ADEBC2412A80F00531A52 /* Album.swift in Sources */,
 				B59ADEC12412A88000531A52 /* Service.swift in Sources */,
@@ -258,11 +281,12 @@
 				B519DDCF2412A2EA0054D4B2 /* Home.swift in Sources */,
 				B56F7A7C2416AAAA0003FC46 /* Loading.swift in Sources */,
 				B5F7082A241146E00090E9F0 /* SceneDelegate.swift in Sources */,
-				B535C9E82411A5A300A5031A /* App.swift in Sources */,
+				B5D73AE52417EBCA007FEE52 /* State.swift in Sources */,
+				B535C9E82411A5A300A5031A /* Message.swift in Sources */,
 				B5F2D94B241154FA006068D8 /* AlbumDetail.swift in Sources */,
 				B5F7082C241146E00090E9F0 /* AlbumList.swift in Sources */,
+				B58914812417E360003A6898 /* Reducer.swift in Sources */,
 				B519DDD12412A38F0054D4B2 /* MockWorld.swift in Sources */,
-				B56F7A7E2416AAD00003FC46 /* Message.swift in Sources */,
 				B563AC0A241164A6007C6617 /* PhotoRow.swift in Sources */,
 				B535C9E124119A4B00A5031A /* MockData.swift in Sources */,
 			);

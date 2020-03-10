@@ -6,7 +6,7 @@
 //  Copyright © 2020 Benjamin Earley. All rights reserved.
 //
 
-struct Photo: Decodable, Identifiable {
+struct Photo: Codable, Hashable, Identifiable {
     var id: Int
     var albumId: Int
     var title: String

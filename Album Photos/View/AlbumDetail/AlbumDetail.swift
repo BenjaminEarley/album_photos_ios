@@ -17,7 +17,7 @@ struct AlbumDetailContainer: View {
         var isLoading = false
         var message: String = ""
         switch store.state.photo.network {
-        case .Loading:
+        case .Loading, .Uninitialized:
             if (photos.isEmpty) {
                 isLoading = true
             }
@@ -39,7 +39,7 @@ struct AlbumDetailContainer: View {
     }
 
     private func fetch() {
-        store.send(.photo(action: .getPhotos(album: album)))
+        store.send(.photo(message: .getPhotos(album: album)))
     }
 }
 
@@ -58,7 +58,7 @@ struct AlbumDetail: View {
             } else if isLoading {
                 Loading()
             } else if message != "" {
-                Message(message: message)
+                Text(message)
             }
         }.navigationBarTitle(Text(title), displayMode: .inline)
     }

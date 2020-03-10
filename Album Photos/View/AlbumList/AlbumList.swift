@@ -16,7 +16,7 @@ struct AlbumListContainer: View {
         var isLoading = false
         var message: String = ""
         switch store.state.album.network {
-        case .Loading:
+        case .Loading, .Uninitialized:
             if (albums.isEmpty) {
                 isLoading = true
             }
@@ -37,7 +37,7 @@ struct AlbumListContainer: View {
     }
 
     private func fetch() {
-        store.send(.album(action: .getAlbums))
+        store.send(.album(message: .getAlbums))
     }
 }
 
@@ -48,16 +48,16 @@ struct AlbumList: View {
 
     var body: some View {
         List {
-            if isLoading {
-                Loading()
-            } else if message != "" {
-                Message(message: message)
-            } else if !albums.isEmpty {
+            if !albums.isEmpty {
                 ForEach(albums) { album in
                     NavigationLink(destination: AlbumDetailContainer(album: album)) {
                         AlbumRow(album: album)
                     }
                 }
+            } else if isLoading {
+                Loading()
+            } else if message != "" {
+                Text(message)
             }
         }.navigationBarTitle("Albums")
     }
