@@ -9,6 +9,7 @@
 import Foundation
 
 enum AppMessage {
+    case selectedAlbum(album: Album?)
     case album(message: AlbumMessage)
     case photo(message: PhotoMessage)
 }

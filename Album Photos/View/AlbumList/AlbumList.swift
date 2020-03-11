@@ -33,11 +33,17 @@ struct AlbumListContainer: View {
                 isLoading: isLoading,
                 message: message,
                 albums: albums
-        ).onAppear(perform: fetch)
+        ) { album in
+            self.openDetail(album: album)
+        }.onAppear(perform: fetch)
     }
 
     private func fetch() {
         store.send(.album(message: .getAlbums))
+    }
+    
+    private func openDetail(album: Album) {
+        store.send(.selectedAlbum(album: album))
     }
 }
 
@@ -45,14 +51,14 @@ struct AlbumList: View {
     let isLoading: Bool
     let message: String
     let albums: [Album]
+    let onTap: (Album) -> Void
 
     var body: some View {
         List {
             if !albums.isEmpty {
                 ForEach(albums) { album in
-                    NavigationLink(destination: AlbumDetailContainer(album: album)) {
-                        AlbumRow(album: album)
-                    }
+                    AlbumRow(album: album)
+                        .onTapGesture { self.onTap(album) }
                 }
             } else if isLoading {
                 Loading()
@@ -66,11 +72,11 @@ struct AlbumList: View {
 struct AlbumListView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            AlbumList(isLoading: false, message: "", albums: albumData)
+            AlbumList(isLoading: false, message: "", albums: albumData, onTap: { _ in })
                     .previewDisplayName("Loaded Album Data")
-            AlbumList(isLoading: true, message: "", albums: [])
+            AlbumList(isLoading: true, message: "", albums: [], onTap: { _ in })
                     .previewDisplayName("Loading")
-            AlbumList(isLoading: false, message: "Error", albums: [])
+            AlbumList(isLoading: false, message: "Error", albums: [], onTap: { _ in })
                     .previewDisplayName("Error")
         }
 

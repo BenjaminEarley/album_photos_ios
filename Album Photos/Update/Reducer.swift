@@ -25,8 +25,10 @@ func appReducer(
         return PhotoReducer(&state.photo, photoMessage, environment).map {
             AppMessage.photo(message: $0)
         }.eraseToAnyPublisher()
+    case let .selectedAlbum(album):
+        state.albumSelected = album
     }
-
+    return Empty().eraseToAnyPublisher()
 }
 
 func AlbumReducer(

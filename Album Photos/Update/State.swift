@@ -7,6 +7,7 @@
 //
 
 struct AppState {
+    var albumSelected: Album?
     var album: AlbumState = AlbumState.init()
     var photo: PhotoState = PhotoState.init()
 }

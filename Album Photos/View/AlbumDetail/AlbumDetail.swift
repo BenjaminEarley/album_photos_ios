@@ -9,11 +9,16 @@
 import SwiftUI
 
 struct AlbumDetailContainer: View {
-    let album: Album
     @EnvironmentObject var store: AppStore
     @State var uuid: UUID? = nil
 
+    @ViewBuilder
     var body: some View {
+        
+        guard let album = store.state.albumSelected else {
+            return Text("Error")
+        }
+        
         let photos = Array(store.state.photo.cache[album.id]?.prefix(10) ?? ArraySlice<Photo>())
         var isLoading = false
         var message: String = ""
@@ -38,14 +43,14 @@ struct AlbumDetailContainer: View {
                 photos: photos
         )
             .onAppear {
-                self.uuid = self.fetch()
+                self.uuid = self.fetch(album: self.album)
             }
             .onDisappear {
                 self.cancelFetch(byUuid: self.uuid)
-        }
+            }
     }
 
-    private func fetch() -> UUID {
+    private func fetch(album: Album) -> UUID {
         return store.send(.photo(message: .getPhotos(album: album)))
     }
     private func cancelFetch(byUuid uuid: UUID?) {
