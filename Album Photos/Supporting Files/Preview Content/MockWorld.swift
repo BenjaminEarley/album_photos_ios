@@ -14,11 +14,11 @@ struct MockWorld: World {
 }
 
 class MockAlbumService: AlbumService {
-    func getAlbums() -> AnyPublisher<[Album], Error> {
+    func getAlbums(limit: Int) -> AnyPublisher<[Album], Error> {
         Just(albumData).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
-    func getPhotos(album: Album) -> AnyPublisher<[Photo], Error> {
+    func getPhotos(album: Album, limit: Int) -> AnyPublisher<[Photo], Error> {
         Just(photoData).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 }

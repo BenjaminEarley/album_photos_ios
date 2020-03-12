@@ -47,10 +47,10 @@ final class Store<State, Message, Environment>: ObservableObject {
                         receiveCompletion: { [weak self] _ in
                             didComplete = true
                             self?.effectCancellables.removeValue(forKey: uuid)
-                            
-                    }, receiveValue: { [weak self] message in
-                        self?.send(message, uuid: uuid)
-                    })
+
+                        }, receiveValue: { [weak self] message in
+                    self?.send(message, uuid: uuid)
+                })
         if !didComplete {
             effectCancellables.updateValue(cancellable, forKey: uuid)
         }

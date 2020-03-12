@@ -12,9 +12,17 @@ struct AlbumDetailContainer: View {
     let album: Album
     @EnvironmentObject var store: AppStore
     @State var uuid: UUID? = nil
+    @State private var query: String = ""
 
     var body: some View {
-        let photos = Array(store.state.photo.cache[album.id]?.prefix(10) ?? ArraySlice<Photo>())
+        let cache = store.state.photo.cache[album.id] ?? [Photo]()
+        let photos = cache.filter {
+            if query == "" {
+                return true
+            } else {
+                return $0.title.localizedCaseInsensitiveContains(query)
+            }
+        }
         var isLoading = false
         var message: String = ""
         switch store.state.photo.network {
@@ -35,19 +43,21 @@ struct AlbumDetailContainer: View {
                 title: album.title,
                 isLoading: isLoading,
                 message: message,
-                photos: photos
+                photos: photos,
+                query: $query
         )
-            .onAppear {
-                self.uuid = self.fetch()
-            }
-            .onDisappear {
-                self.cancelFetch(byUuid: self.uuid)
-        }
+                .onAppear {
+                    self.uuid = self.fetch()
+                }
+                .onDisappear {
+                    self.cancelFetch(byUuid: self.uuid)
+                }
     }
 
     private func fetch() -> UUID {
-        return store.send(.photo(message: .getPhotos(album: album)))
+        store.send(.photo(message: .getPhotos(album: album)))
     }
+
     private func cancelFetch(byUuid uuid: UUID?) {
         guard let id = uuid else {
             return
@@ -62,8 +72,13 @@ struct AlbumDetail: View {
     let message: String
     let photos: [Photo]
 
+    @Binding var query: String
+
     var body: some View {
         List {
+
+            TextField("Search", text: $query)
+
             if !photos.isEmpty {
                 ForEach(photos) { photo in
                     PhotoRow(photo: photo)
@@ -79,6 +94,14 @@ struct AlbumDetail: View {
 
 struct AlbumDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumDetail(title: albumData[0].title, isLoading: false, message: "", photos: photoData)
+        Group {
+            AlbumDetail(title: "", isLoading: false, message: "", photos: photoData, query: Binding.constant(""))
+                    .previewDisplayName("Loaded Photo Data")
+            AlbumDetail(title: "", isLoading: true, message: "", photos: [], query: Binding.constant(""))
+                    .previewDisplayName("Loading")
+            AlbumDetail(title: "", isLoading: false, message: "Error", photos: [], query: Binding.constant(""))
+                    .previewDisplayName("Error")
+        }
+
     }
 }

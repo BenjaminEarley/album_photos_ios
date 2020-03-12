@@ -12,7 +12,7 @@ struct AlbumListContainer: View {
     @EnvironmentObject var store: AppStore
 
     var body: some View {
-        let albums = Array(store.state.album.cache.prefix(10))
+        let albums = store.state.album.cache
         var isLoading = false
         var message: String = ""
         switch store.state.album.network {

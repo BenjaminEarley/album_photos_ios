@@ -6,10 +6,11 @@
 //  Copyright © 2020 Benjamin Earley. All rights reserved.
 //
 
-struct Photo: Codable, Hashable, Identifiable {
+import SwiftUI
+
+struct Photo: Hashable, Identifiable {
     var id: Int
     var albumId: Int
     var title: String
-    var url: String
-    var thumbnailUrl: String
+    var image: UIImage
 }
