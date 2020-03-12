@@ -10,8 +10,6 @@
 		B519DDCF2412A2EA0054D4B2 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519DDCE2412A2EA0054D4B2 /* Home.swift */; };
 		B519DDD12412A38F0054D4B2 /* MockWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519DDD02412A38F0054D4B2 /* MockWorld.swift */; };
 		B535C9E124119A4B00A5031A /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535C9E024119A4B00A5031A /* MockData.swift */; };
-		B535C9E524119A7000A5031A /* albumData.json in Resources */ = {isa = PBXBuildFile; fileRef = B535C9E324119A7000A5031A /* albumData.json */; };
-		B535C9E624119A7000A5031A /* photoData.json in Resources */ = {isa = PBXBuildFile; fileRef = B535C9E424119A7000A5031A /* photoData.json */; };
 		B535C9E82411A5A300A5031A /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535C9E72411A5A300A5031A /* Message.swift */; };
 		B563AC0A241164A6007C6617 /* PhotoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563AC09241164A6007C6617 /* PhotoRow.swift */; };
 		B563AC2024117F58007C6617 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563AC1F24117F58007C6617 /* Store.swift */; };
@@ -36,8 +34,6 @@
 		B519DDCE2412A2EA0054D4B2 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		B519DDD02412A38F0054D4B2 /* MockWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWorld.swift; sourceTree = "<group>"; };
 		B535C9E024119A4B00A5031A /* MockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
-		B535C9E324119A7000A5031A /* albumData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = albumData.json; sourceTree = "<group>"; };
-		B535C9E424119A7000A5031A /* photoData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = photoData.json; sourceTree = "<group>"; };
 		B535C9E72411A5A300A5031A /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B563AC09241164A6007C6617 /* PhotoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRow.swift; sourceTree = "<group>"; };
 		B563AC1F24117F58007C6617 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -71,20 +67,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B535C9E224119A7000A5031A /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B535C9E324119A7000A5031A /* albumData.json */,
-				B535C9E424119A7000A5031A /* photoData.json */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		B563AC1024117AC4007C6617 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				B5F70835241146E10090E9F0 /* Info.plist */,
-				B535C9E224119A7000A5031A /* Resources */,
 				B5F70829241146E00090E9F0 /* SceneDelegate.swift */,
 				B5F70827241146E00090E9F0 /* AppDelegate.swift */,
 				B5F7082D241146E10090E9F0 /* Assets.xcassets */,
@@ -257,8 +243,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5F70834241146E10090E9F0 /* LaunchScreen.storyboard in Resources */,
-				B535C9E624119A7000A5031A /* photoData.json in Resources */,
-				B535C9E524119A7000A5031A /* albumData.json in Resources */,
 				B5F70831241146E10090E9F0 /* Preview Assets.xcassets in Resources */,
 				B5F7082E241146E10090E9F0 /* Assets.xcassets in Resources */,
 			);

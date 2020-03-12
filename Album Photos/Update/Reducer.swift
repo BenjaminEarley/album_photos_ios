@@ -38,7 +38,7 @@ func AlbumReducer(
     case .getAlbums:
         state.network = Result.Loading
         return environment.service
-                .getAlbums()
+                .getAlbums(limit: 10)
                 .map {
                     AlbumMessage.setAlbumResults(albums: $0)
                 }
@@ -62,7 +62,7 @@ func PhotoReducer(
     case let .getPhotos(album: album):
         state.network = Result.Loading
         return environment.service
-                .getPhotos(album: album)
+                .getPhotos(album: album, limit: 10)
                 .map {
                     PhotoMessage.setPhotoResults(album: album, photos: $0)
                 }

@@ -13,7 +13,14 @@ struct PhotoRow: View {
     var photo: Photo
 
     var body: some View {
-        Text(photo.title)
+        HStack {
+            Image(uiImage: photo.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+            Text(photo.title)
+
+        }
     }
 }
 
