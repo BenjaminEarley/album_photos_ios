@@ -6,15 +6,13 @@
 //  Copyright © 2020 Benjamin Earley. All rights reserved.
 //
 
-import SwiftUI
+import UIKit
 import Combine
 
 protocol AlbumService {
     func getAlbums(limit: Int) -> AnyPublisher<[Album], Error>
     func getPhotos(album: Album, limit: Int) -> AnyPublisher<[Photo], Error>
 }
-
-import SwiftUI
 
 struct NetworkPhoto: Codable, Hashable, Identifiable {
     var id: Int

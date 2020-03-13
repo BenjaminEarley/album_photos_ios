@@ -60,6 +60,8 @@ struct AlbumListView_Previews: PreviewProvider {
         Group {
             AlbumList(isLoading: false, message: "", albums: albumData)
                     .previewDisplayName("Loaded Album Data")
+            AlbumList(isLoading: false, message: "No Albums", albums: [Album]())
+                    .previewDisplayName("Loaded Empty Album Data")
             AlbumList(isLoading: true, message: "", albums: [])
                     .previewDisplayName("Loading")
             AlbumList(isLoading: false, message: "Error", albums: [])

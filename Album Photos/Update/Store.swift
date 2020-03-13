@@ -6,7 +6,7 @@
 //  Copyright © 2020 Benjamin Earley. All rights reserved.
 //
 
-import SwiftUI
+import UIKit
 import Combine
 
 typealias AppStore = Store<AppState, AppMessage, World>

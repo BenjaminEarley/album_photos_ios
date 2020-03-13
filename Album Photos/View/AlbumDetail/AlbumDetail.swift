@@ -88,6 +88,8 @@ struct AlbumDetailView_Previews: PreviewProvider {
         Group {
             AlbumDetail(title: "", isLoading: false, message: "", photos: photoData, query: Binding.constant(""))
                     .previewDisplayName("Loaded Photo Data")
+            AlbumDetail(title: "", isLoading: false, message: "No Photos", photos: [Photo](), query: Binding.constant(""))
+                    .previewDisplayName("Loaded Empty Photo Data")
             AlbumDetail(title: "", isLoading: true, message: "", photos: [], query: Binding.constant(""))
                     .previewDisplayName("Loading")
             AlbumDetail(title: "", isLoading: false, message: "Error", photos: [], query: Binding.constant(""))

@@ -20,5 +20,6 @@ struct AlbumRow: View {
 struct albumRow_Previews: PreviewProvider {
     static var previews: some View {
         AlbumRow(album: albumData[0])
+            .previewLayout(.fixed(width: 300, height: 70))
     }
 }
