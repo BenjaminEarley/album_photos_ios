@@ -44,9 +44,9 @@ func AlbumReducer(
                 }
                 .replaceError(with: AlbumMessage.setErrorResult(message: "Error Loading Photos"))
                 .eraseToAnyPublisher()
-    case let .setAlbumResults(album):
-        state.network = .Success(value: album)
-        state.cache = album
+    case let .setAlbumResults(albums):
+        state.network = .Success(value: albums)
+        state.cache = albums
     case let .setErrorResult(message):
         state.network = .Error(reason: message)
     }

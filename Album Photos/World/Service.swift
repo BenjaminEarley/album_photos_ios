@@ -84,17 +84,20 @@ class NetworkAlbumService: AlbumService {
                 }
                 .decode(type: [NetworkPhoto].self, decoder: decoder)
                 .map {
-                    Array($0.prefix(limit))
-                }
-                .map {
                     $0.compactMap { networkPhoto in
                         URLComponents(string: networkPhoto.thumbnailUrl)?.url.map { url in
                             NetworkUrlPhoto(id: networkPhoto.id, albumId: networkPhoto.albumId, title: networkPhoto.title, thumbnailUrl: url)
                         }
                     }
                 }
-                .flatMap { networkUrlPhotos in
-                    Publishers
+                .map {
+                    Array($0.prefix(limit))
+                }
+                .flatMap(maxPublishers: .max(limit + 1)) { (networkUrlPhotos: [NetworkUrlPhoto]) -> AnyPublisher<[Photo], Error> in
+                    let initialValue = networkUrlPhotos.map {
+                        Photo(id: $0.id, albumId: $0.albumId, title: $0.title, image: UIImage())
+                    }
+                    return Publishers
                             .MergeMany(networkUrlPhotos.map { networkUrlPhotos in
                                 self.session
                                         .dataTaskPublisher(for: networkUrlPhotos.thumbnailUrl)
@@ -110,14 +113,11 @@ class NetworkAlbumService: AlbumService {
                                             )
                                         }
                             })
-                            .reduce(
-                                    networkUrlPhotos.map {
-                                        Photo(id: $0.id, albumId: $0.albumId, title: $0.title, image: UIImage())
-                                    }
-                            ) { photos, newPhoto in
+                            .scan(initialValue) { photos, newPhoto in
                                 update(photos, with: newPhoto)
                             }
-
+                            .prepend(initialValue)
+                            .eraseToAnyPublisher()
                 }
                 .eraseToAnyPublisher()
     }
