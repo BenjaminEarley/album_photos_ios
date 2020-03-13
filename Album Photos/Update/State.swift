@@ -12,11 +12,13 @@ struct AppState {
 }
 
 struct AlbumState {
-    var network: Result<[Album]> = .Uninitialized
+    var isLoading: Bool = false
+    var error: String? = nil
     var cache: [Album] = []
 }
 
 struct PhotoState {
-    var network: Result<[Photo]> = .Uninitialized
+    var isLoading: Bool = false
+    var error: String? = nil
     var cache: [Int: [Photo]] = [:]
 }

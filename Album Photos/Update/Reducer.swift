@@ -36,7 +36,7 @@ func AlbumReducer(
 ) -> AnyPublisher<AlbumMessage, Never> {
     switch message {
     case .getAlbums:
-        state.network = Result.Loading
+        state.isLoading = true
         return environment.service
                 .getAlbums(limit: 10)
                 .map {
@@ -45,10 +45,12 @@ func AlbumReducer(
                 .replaceError(with: AlbumMessage.setErrorResult(message: "Error Loading Photos"))
                 .eraseToAnyPublisher()
     case let .setAlbumResults(albums):
-        state.network = .Success(value: albums)
+        state.isLoading = false
+        state.error = nil
         state.cache = albums
     case let .setErrorResult(message):
-        state.network = .Error(reason: message)
+        state.isLoading = false
+        state.error = message
     }
     return Empty().eraseToAnyPublisher()
 }
@@ -60,7 +62,7 @@ func PhotoReducer(
 ) -> AnyPublisher<PhotoMessage, Never> {
     switch message {
     case let .getPhotos(album: album):
-        state.network = Result.Loading
+        state.isLoading = true
         return environment.service
                 .getPhotos(album: album, limit: 10)
                 .map {
@@ -69,17 +71,12 @@ func PhotoReducer(
                 .replaceError(with: PhotoMessage.setErrorResult(message: "Error Loading Photos"))
                 .eraseToAnyPublisher()
     case let .setPhotoResults(album, photos):
-        state.network = .Success(value: photos)
+        state.isLoading = false
+        state.error = nil
         state.cache.updateValue(photos, forKey: album.id)
     case let .setErrorResult(message):
-        state.network = .Error(reason: message)
+        state.isLoading = false
+        state.error = message
     }
     return Empty().eraseToAnyPublisher()
-}
-
-enum Result<T> {
-    case Error(reason: String)
-    case Success(value: T)
-    case Loading
-    case Uninitialized
 }

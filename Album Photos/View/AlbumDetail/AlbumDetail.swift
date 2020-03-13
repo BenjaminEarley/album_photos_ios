@@ -25,19 +25,10 @@ struct AlbumDetailContainer: View {
         }
         var isLoading = false
         var message: String = ""
-        switch store.state.photo.network {
-        case .Loading, .Uninitialized:
-            if (photos.isEmpty) {
-                isLoading = true
-            }
-        case .Error(let reason):
-            if (photos.isEmpty) {
-                message = reason
-            }
-        case .Success(_):
-            if (photos.isEmpty) {
-                message = "No Photos"
-            }
+
+        if (photos.isEmpty) {
+            isLoading = store.state.photo.isLoading
+            message = store.state.photo.error ?? "No Photos"
         }
         return AlbumDetail(
                 title: album.title,

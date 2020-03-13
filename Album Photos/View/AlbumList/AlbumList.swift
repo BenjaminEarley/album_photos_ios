@@ -15,20 +15,12 @@ struct AlbumListContainer: View {
         let albums = store.state.album.cache
         var isLoading = false
         var message: String = ""
-        switch store.state.album.network {
-        case .Loading, .Uninitialized:
-            if (albums.isEmpty) {
-                isLoading = true
-            }
-        case .Error(let reason):
-            if (albums.isEmpty) {
-                message = reason
-            }
-        case .Success(_):
-            if (albums.isEmpty) {
-                message = "No Photos"
-            }
+
+        if (albums.isEmpty) {
+            isLoading = store.state.album.isLoading
+            message = store.state.album.error ?? "No Albums"
         }
+
         return AlbumList(
                 isLoading: isLoading,
                 message: message,
