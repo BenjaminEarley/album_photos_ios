@@ -27,6 +27,6 @@ struct PhotoRow: View {
 struct PhotoRow_Previews: PreviewProvider {
     static var previews: some View {
         PhotoRow(photo: photoData[0])
-            .previewLayout(.fixed(width: 400, height: 120))
+                .previewLayout(.fixed(width: 400, height: 120))
     }
 }

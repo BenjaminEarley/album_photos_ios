@@ -7,18 +7,6 @@
 //
 
 struct AppState {
-    var album: AlbumState = AlbumState.init()
-    var photo: PhotoState = PhotoState.init()
-}
-
-struct AlbumState {
-    var isLoading: Bool = false
-    var error: String? = nil
-    var cache: [Album] = []
-}
-
-struct PhotoState {
-    var isLoading: Bool = false
-    var error: String? = nil
-    var cache: [Int: [Photo]] = [:]
+    var album: AlbumListState = AlbumListState.init()
+    var photo: AlbumDetailState = AlbumDetailState.init()
 }

@@ -7,6 +7,45 @@
 //
 
 import SwiftUI
+import Combine
+
+enum AlbumDetailMessage {
+    case setPhotoResults(album: Album, photos: [Photo])
+    case setErrorResult(message: String)
+    case getPhotos(album: Album)
+}
+
+struct AlbumDetailState {
+    var isLoading: Bool = false
+    var error: String? = nil
+    var cache: [Int: [Photo]] = [:]
+}
+
+func AlbumDetailReducer(
+        _ state: inout AlbumDetailState,
+        _ message: AlbumDetailMessage,
+        _ environment: World
+) -> AnyPublisher<AlbumDetailMessage, Never> {
+    switch message {
+    case let .getPhotos(album: album):
+        state.isLoading = true
+        return environment.service
+                .getPhotos(album: album, limit: 10)
+                .map {
+                    AlbumDetailMessage.setPhotoResults(album: album, photos: $0)
+                }
+                .replaceError(with: AlbumDetailMessage.setErrorResult(message: "Error Loading Photos"))
+                .eraseToAnyPublisher()
+    case let .setPhotoResults(album, photos):
+        state.isLoading = false
+        state.error = nil
+        state.cache.updateValue(photos, forKey: album.id)
+    case let .setErrorResult(message):
+        state.isLoading = false
+        state.error = message
+    }
+    return Empty().eraseToAnyPublisher()
+}
 
 struct AlbumDetailContainer: View {
     let album: Album

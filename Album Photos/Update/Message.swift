@@ -9,20 +9,6 @@
 import Foundation
 
 enum AppMessage {
-    case album(message: AlbumMessage)
-    case photo(message: PhotoMessage)
+    case album(message: AlbumListMessage)
+    case photo(message: AlbumDetailMessage)
 }
-
-enum AlbumMessage {
-    case setAlbumResults(albums: [Album])
-    case setErrorResult(message: String)
-    case getAlbums
-}
-
-enum PhotoMessage {
-    case setPhotoResults(album: Album, photos: [Photo])
-    case setErrorResult(message: String)
-    case getPhotos(album: Album)
-}
-
-
